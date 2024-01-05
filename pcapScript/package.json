@@ -1,0 +1,14 @@
+{
+  "name": "pcapscript",
+  "version": "1.0.0",
+  "description": "pcap collector",
+  "main": "savePcap.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "HYavari",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.1310.0"
+  }
+}

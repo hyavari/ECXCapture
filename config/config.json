@@ -1,0 +1,30 @@
+{
+  "regions": {
+    "lab": ["ca-central-1"],
+    "prod": ["us-east-2", "us-west-2"]
+  },
+  "buckets": {
+    "lab": {
+      "name": "capture-pcaps-lab",
+      "region": "us-east-1"
+    },
+    "prod": {
+      "name": "capture-pcaps-prod",
+      "region": "us-east-2"
+    }
+  },
+  "captureServices": {
+    "SIP Servers": {
+      "PCSCF": {
+        "id": "kamailio-test",
+        "type": "ecs"
+      }
+    },
+    "Media Servers": {
+      "RTPENGINE": {
+        "id": "rtpengine-test",
+        "type": "ec2"
+      }
+    }
+  }
+}
