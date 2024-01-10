@@ -7,6 +7,7 @@ A user-friendly tool for effortless capturing of AWS ECS/EC2 network interfaces,
 - ✅ EC2 Instances Capturing
 
 ## Usage
+
 1. Clone the repository:
     ```bash
     git clone https://github.com/hyavari/ECXCapture
@@ -15,7 +16,11 @@ A user-friendly tool for effortless capturing of AWS ECS/EC2 network interfaces,
     ```bash
     cd {path}/ECXCapture
     ```
-3. Update the config file (`config/config.js`) based on your AWS settings. The config.js file is structured into three main sections:
+3. Install the requirements:
+    ```bash
+    pip install -r requirements.txt
+    ```
+4. Update the config file (`config/config.js`) based on your AWS settings. The config.js file is structured into three main sections:
 
     #### Regions:
 
@@ -71,11 +76,11 @@ A user-friendly tool for effortless capturing of AWS ECS/EC2 network interfaces,
         }
     }
     ```
-4. Run the script:
+6. Run the script:
     ```bash
     python ecx_capture.py
     ```
-5. Follow the on-screen instructions to perform data capture.
+6. Follow the on-screen instructions to perform data capture.
 
 #### Note 
 ⚠️ You need to add required S3 bucket permissions to your service's role.
