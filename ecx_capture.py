@@ -28,7 +28,7 @@ WIRESHARK_FILTERS = 'sip || esp || rtcp || rtp'
 
 # Commands
 TCP_DUMP_ECS_COMMAND = "tcpdump -i any port not 22 -U -s0 -w ./pcapScript/tcpdump_{task_id}.pcap"
-MV_PCAP_TO_S3_ECS_COMMAND = "/root/.nvm/versions/node/v16.19.0/bin/node ./pcapScript/savePcap.js ./pcapScript/tcpdump_{task_id}.pcap"
+MV_PCAP_TO_S3_ECS_COMMAND = "/root/.nvm/versions/node/v16.19.0/bin/node ./pcapScript/savePcap.js ./pcapScript/tcpdump_{task_id}.pcap {bucket_name}"
 TCP_DUMP_EC2_COMMAND = "sudo tcpdump -i any port not 22 -U -s0 -w /home/ec2-user/tcpdump_{instance_id}.pcap"
 TCP_DUMP_EC2_STO_AND_3MV_COMMAND = "sudo pkill tcpdump && sudo aws s3 cp /home/ec2-user/tcpdump_{instance_id}.pcap s3://{bucket_name}/tcpdump_{instance_id}.pcap"
 ECS_CONNECTION_COMMAND = 'aws ecs execute-command --region {region} --profile {sso_profile} --cluster {cluster} --task {task_id} --command "/bin/bash" --interactive'
@@ -255,7 +255,7 @@ async def main():
                 for cluster_name, cluster_info in clusters.items():
                     for task_id in cluster_info.get("tasks", []):
                         process = await run_ecs_command(region, selected_profile, cluster_name, task_id,
-                                                            MV_PCAP_TO_S3_ECS_COMMAND.format(task_id=task_id))
+                                                            MV_PCAP_TO_S3_ECS_COMMAND.format(task_id=task_id, bucket_name=config_data.get("buckets", {}).get(env, {}).get("name")))
                         process.wait()
             
             # Download the pcap files from S3
@@ -312,7 +312,7 @@ async def main():
         for region, instances in ec2_instances.items():
             for instance in instances:
                 # Stop tcpdump and move the pcap file to S3
-                process = await run_ec2_command(region, selected_profile, instance.get("InstanceId"), TCP_DUMP_EC2_STO_AND_3MV_COMMAND.format(instance_id=instance.get("InstanceId"), bucket_name=config_data.get("buckets", {}).get("lab" if env == 1 else "prod")))
+                process = await run_ec2_command(region, selected_profile, instance.get("InstanceId"), TCP_DUMP_EC2_STO_AND_3MV_COMMAND.format(instance_id=instance.get("InstanceId"), bucket_name=config_data.get("buckets", {}).get(env, {}).get("name")))
                 process.wait()
                 instance_ids.append(instance.get("InstanceId"))
 
